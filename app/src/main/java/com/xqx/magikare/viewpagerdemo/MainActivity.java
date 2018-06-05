@@ -43,12 +43,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initView();
-        /*数据初始化*/
-        initData();
-        initDots();
-        initViewpager();
-        initHandler();
+        initView();    // 初始化控件
+        initData();    // 创建轮播图图片数据
+        initDots();    // 根据轮播图图片个数动态添加轮播点
+        initViewpager();  // 初始化ViewPager控件
+        initHandler();   // 配置Handler消息处理
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        actIsAlive = true; // 标记 Activity存活状态，子线程运行
+        autoViewPager();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        actIsAlive = false; // 标记 Activity销毁，子线程结束
     }
 
     private void initView() {
@@ -56,12 +68,6 @@ public class MainActivity extends AppCompatActivity {
         viewpager = (ViewPager) findViewById(R.id.viewpager);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        actIsAlive = true; //
-        autoViewPager();
-    }
 
     /**
      * viewpager自动播放
